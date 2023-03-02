@@ -1,0 +1,23 @@
+USE [Kristal_Lanka]
+GO
+
+/****** Object:  Table [dbo].[BalAd]    Script Date: 2023-02-22 9:27:43 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[BalAd](
+	[AutoID] [int] IDENTITY(1,1) NOT NULL,
+	[BName] [varchar](20) NULL,
+	[Description] [int] NULL,
+	[Debit] [float] NULL,
+	[Credit] [float] NULL,
+	[LastUpdate] [date] NULL,
+	[UpTime] [time](7) NULL,
+	[UName] [varchar](50) NULL
+) ON [PRIMARY]
+GO
+
+
