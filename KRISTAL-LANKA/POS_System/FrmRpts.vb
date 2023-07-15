@@ -170,367 +170,461 @@ Public Class FrmRpts
     End Sub
 
     Private Sub LinkLabel4_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel4.LinkClicked
-        Return
-        Dim report3 As New RptDaySummerya
-        'Dim xCASH As Double = 0
-        'Dim xCRD As Double = 0
-        'Dim xCOLLEC As Double = 0
-        'Dim xCHQ As Double = 0
-        'Dim xCHQRC As Double = 0
-        'Dim xSPAY As Double = 0
-        'Dim xEXP As Double = 0
 
-
-        'cmd = New SqlCommand("Select count(INVNo) from Inv_Main where(InvType='" & "CASH" & "'and LastUpdate='" & DTP1.Value & "')", con)
-        'Dim xINT As Integer = 0
-        'xINT = cmd.ExecuteScalar
-        'If xINT > 0 Then
-        '    cmd = New SqlCommand("Select sum(InvAmnt) from Inv_Main where(InvType='" & "CASH" & "'and LastUpdate='" & DTP1.Value & "')", con)
-        '    xCASH = cmd.ExecuteScalar
-        'End If
-        'xINT = 0
-
-        'cmd = New SqlCommand("Select count(INVNo) from Inv_Main where(InvType='" & "CREDIT" & "'and LastUpdate='" & DTP1.Value & "')", con)
-        'xINT = cmd.ExecuteScalar
-        'If xINT > 0 Then
-        '    cmd = New SqlCommand("Select sum(InvAmnt) from Inv_Main where(InvType='" & "CREDIT" & "'and LastUpdate='" & DTP1.Value & "')", con)
-        '    xCASH = cmd.ExecuteScalar
-        'End If
-        'xINT = 0
-
-        'cmd = New SqlCommand("Select count(RcptNo) from Receipt_Main where(RcvDT='" & DTP1.Value & "')", con)
-        'xINT = cmd.ExecuteScalar
-        'If xINT > 0 Then
-        '    cmd = New SqlCommand("Select sum(RcvAmt) from Receipt_Main where(RcvDT='" & DTP1.Value & "')", con)
-        '    xCOLLEC = cmd.ExecuteScalar
-        'End If
-        'xINT = 0
-
-        'cmd = New SqlCommand("Select count(PayNo) from SUPPayment where(PayMethod='" & "CHEQUE" & "'and PayDate='" & DTP1.Value & "')", con)
-        'xINT = cmd.ExecuteScalar
-        'If xINT > 0 Then
-        '    cmd = New SqlCommand("Select sum(Amount) from SUPPayment where(PayMethod='" & "CHEQUE" & "'and PayDate='" & DTP1.Value & "')", con)
-        '    xCHQ = cmd.ExecuteScalar
-        'End If
-        'xINT = 0
-
-
-        'cmd = New SqlCommand("Select count(INVNo) from ChqRcv where(LastUpdate='" & DTP1.Value & "')", con)
-        'xINT = cmd.ExecuteScalar
-        'If xINT > 0 Then
-        '    cmd = New SqlCommand("Select sum(Amount) from ChqRcv where(LastUpdate='" & DTP1.Value & "')", con)
-        '    xCHQRC = cmd.ExecuteScalar
-        'End If
-        'xINT = 0
-
-        'cmd = New SqlCommand("Select count(PayNo) from SUPPayment where(PayMethod='" & "CASH" & "'and PayDate='" & DTP1.Value & "')", con)
-        'xINT = cmd.ExecuteScalar
-        'If xINT > 0 Then
-        '    cmd = New SqlCommand("Select sum(Amount) from SUPPayment where(PayMethod='" & "CASH" & "'and PayDate='" & DTP1.Value & "')", con)
-        '    xSPAY = cmd.ExecuteScalar
-        'End If
-        'xINT = 0
-
-
-        'cmd = New SqlCommand("Select count(PayAccount) from Pay_Master where(LastUpdate='" & DTP1.Value & "')", con)
-        'xINT = cmd.ExecuteScalar
-        'If xINT > 0 Then
-        '    cmd = New SqlCommand("Select sum(Amnt) from Pay_Master where(LastUpdate='" & DTP1.Value & "')", con)
-        '    xEXP = cmd.ExecuteScalar
-        'End If
-        'xINT = 0
-
-
-        cmd = New SqlCommand("Delete from DaySumer", con)
-        cmd.ExecuteNonQuery()
-
-        Dim Expencess As String = ""
-        cmd = New SqlCommand("Select * from Pay_Master where(LastUpdate='" & DTP1.Value & "'and Description<>'" & "Suplier Payment" & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            If rdr("PayAccount") = "-" Then
-            Else
-                ' rdr("Amnt") 
-                '                                                  Type,                   Discription,         Description1,       AMount,              SDate
-                cmd1 = New SqlCommand("Insert DaySumer values('" & "Expences" & "','" & rdr("PayAccount") & "','" & "-" & "','" & rdr("Amnt") & "','" & DTP1.Value & "')", con1)
-                cmd1.ExecuteNonQuery()
-
-            End If
-        End While
-        rdr.Close()
-
-        cmd = New SqlCommand("Select * from SUPPayment where(LastUpdate='" & DTP1.Value & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            cmd1 = New SqlCommand("Select SupName from Supplier where(SupCode='" & rdr("SupCode") & "')", con1)
-            rdr1 = cmd1.ExecuteReader()
-            If rdr1.Read = True Then
-                If rdr("SupCode") = "-" Then
-                ElseIf rdr1("SupName") = "-" Then
-                Else
-                    '                                                  Type,                   Discription,         Description1,                  AMount,              SDate
-                    cmd2 = New SqlCommand("Insert DaySumer values('" & "Payments" & "','" & rdr1("SupName") & "','" & rdr("ChqPaid") & "','" & rdr("Amount") & "','" & DTP1.Value & "')", con2)
-                    cmd2.ExecuteNonQuery()
-                End If
-            End If
-            rdr1.Close()
-        End While
-        rdr.Close()
-
-
-
-
-        cmd = New SqlCommand("Select * from Receipt_Main where(RcvDT='" & DTP1.Value & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            If rdr("CusName") = "-" Then
-            Else
-                '                                                  Type,                   Discription,         Description1,                  AMount,              SDate
-                cmd1 = New SqlCommand("Insert DaySumer values('" & "Cash Receipts" & "','" & rdr("CusName") & "','" & "-" & "','" & rdr("RcvAmt") & "','" & DTP1.Value & "')", con1)
-                cmd1.ExecuteNonQuery()
-            End If
-
-        End While
-        rdr.Close()
-
-        cmd = New SqlCommand("Select * from ChqRcv where(LastUpdate='" & DTP1.Value & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            If rdr("CusName") = "-" Then
-            Else
-                '                                                  Type,                   Discription,         Description1,                  AMount,              SDate
-                cmd1 = New SqlCommand("Insert DaySumer values('" & "CHQ Receipts" & "','" & rdr("CusName") & "','" & rdr("CHQNo") & "','" & rdr("Amount") & "','" & DTP1.Value & "')", con1)
-                cmd1.ExecuteNonQuery()
-            End If
-
-        End While
-        rdr.Close()
-
-
-        cmd = New SqlCommand("Select * from GRN_Main where(LastUpdate='" & DTP1.Value & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            '                                                   Type,                   Discription,         Description1,                  AMount,              SDate
-            cmd1 = New SqlCommand("Insert DaySumer values('" & "Purchasing" & "','" & rdr("SupName") & "','" & rdr("InvNo") & "','" & rdr("NetAmnt") & "','" & DTP1.Value & "')", con1)
-            cmd1.ExecuteNonQuery()
-        End While
-        rdr.Close()
-
-
-        cmd = New SqlCommand("Select * from SLRTN_Main where(LastUpdate='" & DTP1.Value & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            '                                                   Type,                   Discription,         Description1,      AMount,              SDate
-            cmd1 = New SqlCommand("Insert DaySumer values('" & "Sales Returns" & "','" & rdr("InvNo") & "','" & "-" & "','" & rdr("Amount") & "','" & DTP1.Value & "')", con1)
-            cmd1.ExecuteNonQuery()
-        End While
-        rdr.Close()
-
-
-
-
-        cmd = New SqlCommand("Select * from SUPRTN_Main where(LastUpdate='" & DTP1.Value & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            '                                                   Type,                      Discription,         Description1,      AMount,              SDate
-            cmd1 = New SqlCommand("Insert DaySumer values('" & "Purchase Returns" & "','" & rdr("SupName") & "','" & "-" & "','" & rdr("Amount") & "','" & DTP1.Value & "')", con1)
-            cmd1.ExecuteNonQuery()
-        End While
-        rdr.Close()
-
-        cmd = New SqlCommand("Select * from CHQPAY_Sub where(LastUpdate='" & DTP1.Value & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            '                                                   Type,                      Discription,             Description1,          AMount,              SDate
-            cmd1 = New SqlCommand("Insert DaySumer values('" & "Cheque Paids" & "','" & rdr("SupName") & "','" & rdr("CHQNo") & "','" & rdr("CHQAmnt") & "','" & DTP1.Value & "')", con1)
-            cmd1.ExecuteNonQuery()
-        End While
-        rdr.Close()
-
-
-
-
-
-        Dim xDamount As Double = 0
-        cmd = New SqlCommand("Select * from Acc_Main where(LastUpdate='" & DTP1.Value & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            If rdr("Debit") = 0 Then
-                xDamount = rdr("Credit")
-            ElseIf rdr("Credit") = 0 Then
-                xDamount = rdr("Debit")
-            End If
-            '                                                       Type,                      Discription,         Description1,      AMount,              SDate
-            cmd1 = New SqlCommand("Insert DaySumer values('" & rdr("BankName") & "','" & rdr("Description") & "','" & "-" & "','" & xDamount & "','" & DTP1.Value & "')", con1)
-            cmd1.ExecuteNonQuery()
-        End While
-        rdr.Close()
-
-
-
-
-        cmd = New SqlCommand("Select * from Inv_Main where(LastUpdate='" & DTP1.Value & "'and InvType='" & "CREDIT" & "')", con)
-        rdr = cmd.ExecuteReader
-        While rdr.Read
-            '                                                       Type,                 Discription,         Description1,      AMount,              SDate
-            cmd1 = New SqlCommand("Insert DaySumer values('" & "Credit Sales" & "','" & rdr("CusName") & "','" & "-" & "','" & rdr("InvAmnt") & "','" & DTP1.Value & "')", con1)
-            cmd1.ExecuteNonQuery()
-        End While
-        rdr.Close()
-
-
-
-
-        '
-        Dim xBFA As Double = 0
-        'cmd = New SqlCommand("Select * from CashFlow where(LastUpdate='" & DTP1.Value & "')", con)
-        'rdr = cmd.ExecuteReader
-        'If rdr.Read = True Then
-        '    cmd1 = New SqlCommand("Select DayBal from CashFlow where(LastUpdate='" & DTP1.Value & "')", con1)
-        '    xBFA = cmd1.ExecuteScalar
-        'End If
-        'rdr.Close()
-
-
-        Dim odt As DateTime = "2023-01-01"
-        Dim opBals As Double = 0
-        cmd = New SqlCommand("Select BfBal from CashFlow where LastUpdate='" & odt.Date & "'", con)
-        opBals = cmd.ExecuteScalar
-
-        xBFA = GetOpBal(odt.Date, DTP1.Value.Date)
-        xBFA += opBals
-
+        'Dim dd As DateTime = DTP1.Value.Date
+        'Dim dd1 As DateTime = DTP2.Value.Date
+        Dim opBal As Double = 0
         Dim cashSales As Double = 0
-        Dim cashReceipts As Double = 0
-        Dim cashWdraw As Double = 0
-        Dim exp As Double = 0
-        Dim suppay As Double = 0
-        Dim deposit As Double = 0
-        Dim crPays As Double = 0
-        Dim slRtn As Double = 0
-        Dim crdSls As Double = 0
-
-        Dim dcs As Double = 0
-        cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CASH" & "'and LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
+        Dim cardsales As Double = 0
+        cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0) from Inv_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate<='" & DTP2.Value.Date & "'and InvType='" & "CASH" & "'and ByCash='" & 0 & "'", con)
         cashSales = cmd.ExecuteScalar
+        cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0) from Inv_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate<='" & DTP2.Value.Date & "'and ByCash>'" & 0 & "'", con)
+        cardsales = cmd.ExecuteScalar
+        Dim xxc As New RptMNT
+        xxc.SetParameterValue("xfr", DTP1.Text)
+        xxc.SetParameterValue("xt", DTP2.Text)
+        xxc.SetParameterValue("csh", Format(cashSales, "0.00"))
+        xxc.SetParameterValue("crd", Format(cardsales, "0.00"))
+        xxc.SetParameterValue("xtt", Format(cashSales + cardsales, "0.00"))
+        CrystalReportViewer1.ReportSource = xxc
+        CrystalReportViewer1.Refresh()
+        'While (dd <= dd1)
+        '    Dim cashSales As Double = 0
+        '    Dim cashReceipts As Double = 0
+        '    Dim cashWdraw As Double = 0
+        '    Dim exp As Double = 0
+        '    Dim suppay As Double = 0
+        '    Dim deposit As Double = 0
+        '    ' Dim crPays As Double = 0
+        '    Dim slRtn As Double = 0
+        '    Dim crdSls As Double = 0
+        '    Dim opBal As Double = 0
+        '    cmd = New SqlCommand("Select ISNULL(SUM(amn),0) from Op where Dte='" & dd & "'", con)
+        '    opBal = cmd.ExecuteScalar
+        '    Dim dcs As Double = 0
+        '    cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CASH" & "'and LastUpdate='" & dd & "'and ByCash='" & 0 & "'", con)
+        '    cashSales = cmd.ExecuteScalar
 
-        cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CREDIT" & "'and LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
-        crdSls = cmd.ExecuteScalar
+        '    cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where ByCash>'" & 0 & "'and LastUpdate='" & dd & "'", con)
+        '    crdSls = cmd.ExecuteScalar
 
-        cmd = New SqlCommand("Select ISNULL(SUM(ByCard),0)from Inv_Main where InvType='" & "CREDIT" & "'and LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
-        crPays = cmd.ExecuteScalar
+        '    'cmd = New SqlCommand("Select ISNULL(SUM(ByCash),0)from Inv_Main where LastUpdate='" & dd & "'", con)
+        '    'crPays = cmd.ExecuteScalar
 
-        cmd = New SqlCommand("Select ISNULL(SUM(RcvAmt),0)from Receipt_Main where RcvDT>='" & DTP1.Value.Date & "'and RcvDT <='" & DTP2.Value.Date & "'", con)
-        cashReceipts = cmd.ExecuteScalar
-        ' cashReceipts = cashReceipts - crPays
+        '    cmd = New SqlCommand("Select ISNULL(SUM(RcvAmt),0)from Receipt_Main where RcvDT='" & dd & "'", con)
+        '    cashReceipts = cmd.ExecuteScalar
+        '    ' cashReceipts = cashReceipts - crPays
 
-        cmd = New SqlCommand("Select ISNULL(SUM(Credit),0)from Acc_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'and Description like'%" & "Cash Widraw" & "%'", con)
-        cashWdraw = cmd.ExecuteScalar
+        '    cmd = New SqlCommand("Select ISNULL(SUM(Credit),0)from Acc_Main where LastUpdate='" & dd & "'and Description like'%" & "Cash Widraw" & "%'", con)
+        '    cashWdraw = cmd.ExecuteScalar
 
-        cmd = New SqlCommand("Select ISNULL(SUM(Amnt),0)from Pay_Master where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'and Description like'" & "Suplier Payment" & "'", con)
-        suppay = cmd.ExecuteScalar
-
-
-        cmd = New SqlCommand("Select ISNULL(SUM(Amnt),0)from Pay_Master where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
-        exp = cmd.ExecuteScalar
-        exp = exp - (suppay + cashWdraw)
-
-        cmd = New SqlCommand("Select ISNULL(SUM(Debit),0)from Acc_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'and Description like'%" & "CASH  Deposit" & "%'", con)
-        deposit = cmd.ExecuteScalar
-
-        cmd = New SqlCommand("Select ISNULL(SUM(Amount),0)from SLRTN_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
-        slRtn = cmd.ExecuteScalar
-        Dim Chq As Double = 0
-        cmd = New SqlCommand("Select ISNULL(SUM(ByCash),0)from Inv_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
-        Chq = cmd.ExecuteScalar
-
-
-        Dim nowBal As Double = 0
-
-        nowBal = (cashSales + cashReceipts) - (exp + suppay + deposit + slRtn)
-        xBFA += nowBal
-
-
-
-
-
-
-
-
+        '    cmd = New SqlCommand("Select ISNULL(SUM(Amnt),0)from Pay_Master where LastUpdate='" & dd & "'and Description like'" & "Suplier Payment" & "'", con)
+        '    suppay = cmd.ExecuteScalar
 
 
+        '    cmd = New SqlCommand("Select ISNULL(SUM(Amnt),0)from Pay_Master where LastUpdate='" & dd & "'", con)
+        '    exp = cmd.ExecuteScalar
+        '    exp = exp - (suppay + cashWdraw)
+
+        '    cmd = New SqlCommand("Select ISNULL(SUM(Debit),0)from Acc_Main where LastUpdate='" & dd & "'and Description like'%" & "Cash Deposit" & "%'", con)
+        '    deposit = cmd.ExecuteScalar
+
+        '    cmd = New SqlCommand("Select ISNULL(SUM(Amount),0)from SLRTN_Main where LastUpdate='" & dd & "'", con)
+        '    slRtn = cmd.ExecuteScalar
+
+        '    Dim Chq As Double = 0
+        '    'cmd = New SqlCommand("Select ISNULL(SUM(ByCash),0)from Inv_Main where LastUpdate='" & dd & "'", con)
+        '    'Chq = cmd.ExecuteScalar
+
+        '    Dim rcvChq As Double = 0
+        '    cmd = New SqlCommand("Select ISNULL(SUM(Amount),0)from ChqRcv where LastUpdate='" & dd & "'", con)
+        '    rcvChq = cmd.ExecuteScalar
+        '    Chq += rcvChq
 
 
-        'report3.SetParameterValue("xCASHSL", xCASH)
-        'report3.SetParameterValue("xCRSL", xCRD)
-        'report3.SetParameterValue("xCOLLEC", xCOLLEC)
-        'report3.SetParameterValue("xCHQ", xCOLLEC)
-        'report3.SetParameterValue("xCHQPAY", xCHQ)
-        'report3.SetParameterValue("xEXP", xEXP)
-        'report3.SetParameterValue("xPAY", xSPAY)
-        'report3.SetParameterValue("xExpences", Expencess)
-        'report3.SetParameterValue("xPayments", Paymentsa)
-        report3.SetParameterValue("xBF", xBFA)
-        report3.SetParameterValue("xDT", DTP1.Text)
+        '    Tables.Rows.Add(dd, cashSales, cashReceipts, cashWdraw, exp, suppay, deposit, slRtn, crdSls, opBal, Chq)
+        '    Dim nowBal As Double = 0
 
-        'cmd1 = New SqlCommand("Delete from DaySummery where(LastUpdate='" & DTP1.Value & "')", con1)
-        'cmd1.ExecuteNonQuery()
+        '    nowBal = (opBal + cashSales + cashReceipts) - (exp + suppay + deposit + slRtn)
+        '    opBal = nowBal
+        '    dd = dd.AddDays(1)
+        'End While
 
 
 
-        'cmd = New SqlCommand("Select * from DaySummery where(LastUpdate='" & DTP1.Value & "')", con)
-        'rdr = cmd.ExecuteReader
-        'If rdr.Read = True Then
+        'Dim xxc As New RptDayEndNew
+        'xxc.SetDataSource(ds.Tables(1))
+        ''xxc.SetParameterValue("xfr", DTP1.Text)
+        ''xxc.SetParameterValue("xto", DTP2.Text)
+        'CrystalReportViewer1.ReportSource = xxc
+        'CrystalReportViewer1.Refresh()
 
-        'Else
-        '    '                                                   Exp,        ExpAmnt,      SupPay,   SpPayAmnt,    CashRcv,     RcvAmnt,    ChqPays,      PayAmnt,               LastUpdate
-        '    cmd1 = New SqlCommand("Insert DaySummery values('" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
-        '    cmd1.ExecuteNonQuery()
-        'End If
-        'rdr.Close()
 
-        'cmd = New SqlCommand("Select * from Pay_Master where(LastUpdate='" & DTP1.Value & "'and Description<>'" & "Supplier Payment" & "')", con)
+
+
+
+
+
+        'Dim report3 As New RptDaySummerya
+        ''Dim xCASH As Double = 0
+        ''Dim xCRD As Double = 0
+        ''Dim xCOLLEC As Double = 0
+        ''Dim xCHQ As Double = 0
+        ''Dim xCHQRC As Double = 0
+        ''Dim xSPAY As Double = 0
+        ''Dim xEXP As Double = 0
+
+
+        ''cmd = New SqlCommand("Select count(INVNo) from Inv_Main where(InvType='" & "CASH" & "'and LastUpdate='" & DTP1.Value & "')", con)
+        ''Dim xINT As Integer = 0
+        ''xINT = cmd.ExecuteScalar
+        ''If xINT > 0 Then
+        ''    cmd = New SqlCommand("Select sum(InvAmnt) from Inv_Main where(InvType='" & "CASH" & "'and LastUpdate='" & DTP1.Value & "')", con)
+        ''    xCASH = cmd.ExecuteScalar
+        ''End If
+        ''xINT = 0
+
+        ''cmd = New SqlCommand("Select count(INVNo) from Inv_Main where(InvType='" & "CREDIT" & "'and LastUpdate='" & DTP1.Value & "')", con)
+        ''xINT = cmd.ExecuteScalar
+        ''If xINT > 0 Then
+        ''    cmd = New SqlCommand("Select sum(InvAmnt) from Inv_Main where(InvType='" & "CREDIT" & "'and LastUpdate='" & DTP1.Value & "')", con)
+        ''    xCASH = cmd.ExecuteScalar
+        ''End If
+        ''xINT = 0
+
+        ''cmd = New SqlCommand("Select count(RcptNo) from Receipt_Main where(RcvDT='" & DTP1.Value & "')", con)
+        ''xINT = cmd.ExecuteScalar
+        ''If xINT > 0 Then
+        ''    cmd = New SqlCommand("Select sum(RcvAmt) from Receipt_Main where(RcvDT='" & DTP1.Value & "')", con)
+        ''    xCOLLEC = cmd.ExecuteScalar
+        ''End If
+        ''xINT = 0
+
+        ''cmd = New SqlCommand("Select count(PayNo) from SUPPayment where(PayMethod='" & "CHEQUE" & "'and PayDate='" & DTP1.Value & "')", con)
+        ''xINT = cmd.ExecuteScalar
+        ''If xINT > 0 Then
+        ''    cmd = New SqlCommand("Select sum(Amount) from SUPPayment where(PayMethod='" & "CHEQUE" & "'and PayDate='" & DTP1.Value & "')", con)
+        ''    xCHQ = cmd.ExecuteScalar
+        ''End If
+        ''xINT = 0
+
+
+        ''cmd = New SqlCommand("Select count(INVNo) from ChqRcv where(LastUpdate='" & DTP1.Value & "')", con)
+        ''xINT = cmd.ExecuteScalar
+        ''If xINT > 0 Then
+        ''    cmd = New SqlCommand("Select sum(Amount) from ChqRcv where(LastUpdate='" & DTP1.Value & "')", con)
+        ''    xCHQRC = cmd.ExecuteScalar
+        ''End If
+        ''xINT = 0
+
+        ''cmd = New SqlCommand("Select count(PayNo) from SUPPayment where(PayMethod='" & "CASH" & "'and PayDate='" & DTP1.Value & "')", con)
+        ''xINT = cmd.ExecuteScalar
+        ''If xINT > 0 Then
+        ''    cmd = New SqlCommand("Select sum(Amount) from SUPPayment where(PayMethod='" & "CASH" & "'and PayDate='" & DTP1.Value & "')", con)
+        ''    xSPAY = cmd.ExecuteScalar
+        ''End If
+        ''xINT = 0
+
+
+        ''cmd = New SqlCommand("Select count(PayAccount) from Pay_Master where(LastUpdate='" & DTP1.Value & "')", con)
+        ''xINT = cmd.ExecuteScalar
+        ''If xINT > 0 Then
+        ''    cmd = New SqlCommand("Select sum(Amnt) from Pay_Master where(LastUpdate='" & DTP1.Value & "')", con)
+        ''    xEXP = cmd.ExecuteScalar
+        ''End If
+        ''xINT = 0
+
+
+        'cmd = New SqlCommand("Delete from DaySumer", con)
+        'cmd.ExecuteNonQuery()
+
+        'Dim Expencess As String = ""
+        'cmd = New SqlCommand("Select * from Pay_Master where(LastUpdate='" & DTP1.Value & "'and Description<>'" & "Suplier Payment" & "')", con)
         'rdr = cmd.ExecuteReader
         'While rdr.Read
-        '    '                                                   Exp,                           ExpAmnt,          SupPay,   SpPayAmnt,    CashRcv,     RcvAmnt,    ChqPays,      PayAmnt,               LastUpdate
-        '    cmd1 = New SqlCommand("Insert DaySummery values('" & rdr("PayAccount") & "','" & rdr("Amnt") & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
-        '    cmd1.ExecuteNonQuery()
+        '    If rdr("PayAccount") = "-" Then
+        '    Else
+        '        ' rdr("Amnt") 
+        '        '                                                  Type,                   Discription,         Description1,       AMount,              SDate
+        '        cmd1 = New SqlCommand("Insert DaySumer values('" & "Expences" & "','" & rdr("PayAccount") & "','" & "-" & "','" & rdr("Amnt") & "','" & DTP1.Value & "')", con1)
+        '        cmd1.ExecuteNonQuery()
+
+        '    End If
         'End While
         'rdr.Close()
 
         'cmd = New SqlCommand("Select * from SUPPayment where(LastUpdate='" & DTP1.Value & "')", con)
         'rdr = cmd.ExecuteReader
         'While rdr.Read
-        '    '                                                   Exp,         ExpAmnt,       SupPay,                                 SpPayAmnt,                    CashRcv,     RcvAmnt,    ChqPays,      PayAmnt,               LastUpdate
-        '    cmd1 = New SqlCommand("Insert DaySummery values('" & "-" & "','" & 0 & "','" & rdr("SupCode") & "-" & rdr("ChqPaid") & "','" & rdr("Amount") & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
-        '    cmd1.ExecuteNonQuery()
+        '    cmd1 = New SqlCommand("Select SupName from Supplier where(SupCode='" & rdr("SupCode") & "')", con1)
+        '    rdr1 = cmd1.ExecuteReader()
+        '    If rdr1.Read = True Then
+        '        If rdr("SupCode") = "-" Then
+        '        ElseIf rdr1("SupName") = "-" Then
+        '        Else
+        '            '                                                  Type,                   Discription,         Description1,                  AMount,              SDate
+        '            cmd2 = New SqlCommand("Insert DaySumer values('" & "Payments" & "','" & rdr1("SupName") & "','" & rdr("ChqPaid") & "','" & rdr("Amount") & "','" & DTP1.Value & "')", con2)
+        '            cmd2.ExecuteNonQuery()
+        '        End If
+        '    End If
+        '    rdr1.Close()
         'End While
         'rdr.Close()
+
+
+
 
         'cmd = New SqlCommand("Select * from Receipt_Main where(RcvDT='" & DTP1.Value & "')", con)
         'rdr = cmd.ExecuteReader
         'While rdr.Read
-        '    '                                                   Exp,         ExpAmnt,       SupPay,     SpPayAmnt,     CashRcv,              RcvAmnt,                 ChqPays,      PayAmnt,               LastUpdate
-        '    cmd1 = New SqlCommand("Insert DaySummery values('" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & rdr("CusName") & "','" & rdr("RcvAmt") & "','" & "-" & "','" & 0 & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
-        '    cmd1.ExecuteNonQuery()
+        '    If rdr("CusName") = "-" Then
+        '    Else
+        '        '                                                  Type,                   Discription,         Description1,                  AMount,              SDate
+        '        cmd1 = New SqlCommand("Insert DaySumer values('" & "Cash Receipts" & "','" & rdr("CusName") & "','" & "-" & "','" & rdr("RcvAmt") & "','" & DTP1.Value & "')", con1)
+        '        cmd1.ExecuteNonQuery()
+        '    End If
+
         'End While
         'rdr.Close()
-
 
         'cmd = New SqlCommand("Select * from ChqRcv where(LastUpdate='" & DTP1.Value & "')", con)
         'rdr = cmd.ExecuteReader
         'While rdr.Read
-        '    '                                                   Exp,         ExpAmnt,       SupPay,     SpPayAmnt,     CashRcv,  RcvAmnt,       ChqPays,                                       PayAmnt,               LastUpdate
-        '    cmd1 = New SqlCommand("Insert DaySummery values('" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & rdr("CusName") & "-" & rdr("CHQNo") & "','" & rdr("Amount") & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
+        '    If rdr("CusName") = "-" Then
+        '    Else
+        '        '                                                  Type,                   Discription,         Description1,                  AMount,              SDate
+        '        cmd1 = New SqlCommand("Insert DaySumer values('" & "CHQ Receipts" & "','" & rdr("CusName") & "','" & rdr("CHQNo") & "','" & rdr("Amount") & "','" & DTP1.Value & "')", con1)
+        '        cmd1.ExecuteNonQuery()
+        '    End If
+
+        'End While
+        'rdr.Close()
+
+
+        'cmd = New SqlCommand("Select * from GRN_Main where(LastUpdate='" & DTP1.Value & "')", con)
+        'rdr = cmd.ExecuteReader
+        'While rdr.Read
+        '    '                                                   Type,                   Discription,         Description1,                  AMount,              SDate
+        '    cmd1 = New SqlCommand("Insert DaySumer values('" & "Purchasing" & "','" & rdr("SupName") & "','" & rdr("InvNo") & "','" & rdr("NetAmnt") & "','" & DTP1.Value & "')", con1)
         '    cmd1.ExecuteNonQuery()
         'End While
         'rdr.Close()
 
 
-        report3.RecordSelectionFormula = "{DaySumer.SDate} ='" & Format(DTP1.Value, "yyyy-MM-dd") & "'"
-        xCRINFO(report3)
-        CrystalReportViewer1.ReportSource = report3
-        CrystalReportViewer1.Refresh()
+        'cmd = New SqlCommand("Select * from SLRTN_Main where(LastUpdate='" & DTP1.Value & "')", con)
+        'rdr = cmd.ExecuteReader
+        'While rdr.Read
+        '    '                                                   Type,                   Discription,         Description1,      AMount,              SDate
+        '    cmd1 = New SqlCommand("Insert DaySumer values('" & "Sales Returns" & "','" & rdr("InvNo") & "','" & "-" & "','" & rdr("Amount") & "','" & DTP1.Value & "')", con1)
+        '    cmd1.ExecuteNonQuery()
+        'End While
+        'rdr.Close()
+
+
+
+
+        'cmd = New SqlCommand("Select * from SUPRTN_Main where(LastUpdate='" & DTP1.Value & "')", con)
+        'rdr = cmd.ExecuteReader
+        'While rdr.Read
+        '    '                                                   Type,                      Discription,         Description1,      AMount,              SDate
+        '    cmd1 = New SqlCommand("Insert DaySumer values('" & "Purchase Returns" & "','" & rdr("SupName") & "','" & "-" & "','" & rdr("Amount") & "','" & DTP1.Value & "')", con1)
+        '    cmd1.ExecuteNonQuery()
+        'End While
+        'rdr.Close()
+
+        'cmd = New SqlCommand("Select * from CHQPAY_Sub where(LastUpdate='" & DTP1.Value & "')", con)
+        'rdr = cmd.ExecuteReader
+        'While rdr.Read
+        '    '                                                   Type,                      Discription,             Description1,          AMount,              SDate
+        '    cmd1 = New SqlCommand("Insert DaySumer values('" & "Cheque Paids" & "','" & rdr("SupName") & "','" & rdr("CHQNo") & "','" & rdr("CHQAmnt") & "','" & DTP1.Value & "')", con1)
+        '    cmd1.ExecuteNonQuery()
+        'End While
+        'rdr.Close()
+
+
+
+
+
+        'Dim xDamount As Double = 0
+        'cmd = New SqlCommand("Select * from Acc_Main where(LastUpdate='" & DTP1.Value & "')", con)
+        'rdr = cmd.ExecuteReader
+        'While rdr.Read
+        '    If rdr("Debit") = 0 Then
+        '        xDamount = rdr("Credit")
+        '    ElseIf rdr("Credit") = 0 Then
+        '        xDamount = rdr("Debit")
+        '    End If
+        '    '                                                       Type,                      Discription,         Description1,      AMount,              SDate
+        '    cmd1 = New SqlCommand("Insert DaySumer values('" & rdr("BankName") & "','" & rdr("Description") & "','" & "-" & "','" & xDamount & "','" & DTP1.Value & "')", con1)
+        '    cmd1.ExecuteNonQuery()
+        'End While
+        'rdr.Close()
+
+
+
+
+        'cmd = New SqlCommand("Select * from Inv_Main where(LastUpdate='" & DTP1.Value & "'and InvType='" & "CREDIT" & "')", con)
+        'rdr = cmd.ExecuteReader
+        'While rdr.Read
+        '    '                                                       Type,                 Discription,         Description1,      AMount,              SDate
+        '    cmd1 = New SqlCommand("Insert DaySumer values('" & "Credit Sales" & "','" & rdr("CusName") & "','" & "-" & "','" & rdr("InvAmnt") & "','" & DTP1.Value & "')", con1)
+        '    cmd1.ExecuteNonQuery()
+        'End While
+        'rdr.Close()
+
+
+
+
+        ''
+        'Dim xBFA As Double = 0
+        ''cmd = New SqlCommand("Select * from CashFlow where(LastUpdate='" & DTP1.Value & "')", con)
+        ''rdr = cmd.ExecuteReader
+        ''If rdr.Read = True Then
+        ''    cmd1 = New SqlCommand("Select DayBal from CashFlow where(LastUpdate='" & DTP1.Value & "')", con1)
+        ''    xBFA = cmd1.ExecuteScalar
+        ''End If
+        ''rdr.Close()
+
+
+        'Dim odt As DateTime = "2023-01-01"
+        'Dim opBals As Double = 0
+        'cmd = New SqlCommand("Select BfBal from CashFlow where LastUpdate='" & odt.Date & "'", con)
+        'opBals = cmd.ExecuteScalar
+
+        'xBFA = GetOpBal(odt.Date, DTP1.Value.Date)
+        'xBFA += opBals
+
+        'Dim cashSales As Double = 0
+        'Dim cashReceipts As Double = 0
+        'Dim cashWdraw As Double = 0
+        'Dim exp As Double = 0
+        'Dim suppay As Double = 0
+        'Dim deposit As Double = 0
+        'Dim crPays As Double = 0
+        'Dim slRtn As Double = 0
+        'Dim crdSls As Double = 0
+
+        'Dim dcs As Double = 0
+        'cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CASH" & "'and LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
+        'cashSales = cmd.ExecuteScalar
+
+        'cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CREDIT" & "'and LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
+        'crdSls = cmd.ExecuteScalar
+
+        'cmd = New SqlCommand("Select ISNULL(SUM(ByCard),0)from Inv_Main where InvType='" & "CREDIT" & "'and LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
+        'crPays = cmd.ExecuteScalar
+
+        'cmd = New SqlCommand("Select ISNULL(SUM(RcvAmt),0)from Receipt_Main where RcvDT>='" & DTP1.Value.Date & "'and RcvDT <='" & DTP2.Value.Date & "'", con)
+        'cashReceipts = cmd.ExecuteScalar
+        '' cashReceipts = cashReceipts - crPays
+
+        'cmd = New SqlCommand("Select ISNULL(SUM(Credit),0)from Acc_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'and Description like'%" & "Cash Widraw" & "%'", con)
+        'cashWdraw = cmd.ExecuteScalar
+
+        'cmd = New SqlCommand("Select ISNULL(SUM(Amnt),0)from Pay_Master where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'and Description like'" & "Suplier Payment" & "'", con)
+        'suppay = cmd.ExecuteScalar
+
+
+        'cmd = New SqlCommand("Select ISNULL(SUM(Amnt),0)from Pay_Master where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
+        'exp = cmd.ExecuteScalar
+        'exp = exp - (suppay + cashWdraw)
+
+        'cmd = New SqlCommand("Select ISNULL(SUM(Debit),0)from Acc_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'and Description like'%" & "CASH  Deposit" & "%'", con)
+        'deposit = cmd.ExecuteScalar
+
+        'cmd = New SqlCommand("Select ISNULL(SUM(Amount),0)from SLRTN_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
+        'slRtn = cmd.ExecuteScalar
+        'Dim Chq As Double = 0
+        'cmd = New SqlCommand("Select ISNULL(SUM(ByCash),0)from Inv_Main where LastUpdate>='" & DTP1.Value.Date & "'and LastUpdate <='" & DTP2.Value.Date & "'", con)
+        'Chq = cmd.ExecuteScalar
+
+
+        'Dim nowBal As Double = 0
+
+        'nowBal = (cashSales + cashReceipts) - (exp + suppay + deposit + slRtn)
+        'xBFA += nowBal
+
+
+
+
+
+
+
+
+
+
+
+
+        ''report3.SetParameterValue("xCASHSL", xCASH)
+        ''report3.SetParameterValue("xCRSL", xCRD)
+        ''report3.SetParameterValue("xCOLLEC", xCOLLEC)
+        ''report3.SetParameterValue("xCHQ", xCOLLEC)
+        ''report3.SetParameterValue("xCHQPAY", xCHQ)
+        ''report3.SetParameterValue("xEXP", xEXP)
+        ''report3.SetParameterValue("xPAY", xSPAY)
+        ''report3.SetParameterValue("xExpences", Expencess)
+        ''report3.SetParameterValue("xPayments", Paymentsa)
+        'report3.SetParameterValue("xBF", xBFA)
+        'report3.SetParameterValue("xDT", DTP1.Text)
+
+        ''cmd1 = New SqlCommand("Delete from DaySummery where(LastUpdate='" & DTP1.Value & "')", con1)
+        ''cmd1.ExecuteNonQuery()
+
+
+
+        ''cmd = New SqlCommand("Select * from DaySummery where(LastUpdate='" & DTP1.Value & "')", con)
+        ''rdr = cmd.ExecuteReader
+        ''If rdr.Read = True Then
+
+        ''Else
+        ''    '                                                   Exp,        ExpAmnt,      SupPay,   SpPayAmnt,    CashRcv,     RcvAmnt,    ChqPays,      PayAmnt,               LastUpdate
+        ''    cmd1 = New SqlCommand("Insert DaySummery values('" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
+        ''    cmd1.ExecuteNonQuery()
+        ''End If
+        ''rdr.Close()
+
+        ''cmd = New SqlCommand("Select * from Pay_Master where(LastUpdate='" & DTP1.Value & "'and Description<>'" & "Supplier Payment" & "')", con)
+        ''rdr = cmd.ExecuteReader
+        ''While rdr.Read
+        ''    '                                                   Exp,                           ExpAmnt,          SupPay,   SpPayAmnt,    CashRcv,     RcvAmnt,    ChqPays,      PayAmnt,               LastUpdate
+        ''    cmd1 = New SqlCommand("Insert DaySummery values('" & rdr("PayAccount") & "','" & rdr("Amnt") & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
+        ''    cmd1.ExecuteNonQuery()
+        ''End While
+        ''rdr.Close()
+
+        ''cmd = New SqlCommand("Select * from SUPPayment where(LastUpdate='" & DTP1.Value & "')", con)
+        ''rdr = cmd.ExecuteReader
+        ''While rdr.Read
+        ''    '                                                   Exp,         ExpAmnt,       SupPay,                                 SpPayAmnt,                    CashRcv,     RcvAmnt,    ChqPays,      PayAmnt,               LastUpdate
+        ''    cmd1 = New SqlCommand("Insert DaySummery values('" & "-" & "','" & 0 & "','" & rdr("SupCode") & "-" & rdr("ChqPaid") & "','" & rdr("Amount") & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
+        ''    cmd1.ExecuteNonQuery()
+        ''End While
+        ''rdr.Close()
+
+        ''cmd = New SqlCommand("Select * from Receipt_Main where(RcvDT='" & DTP1.Value & "')", con)
+        ''rdr = cmd.ExecuteReader
+        ''While rdr.Read
+        ''    '                                                   Exp,         ExpAmnt,       SupPay,     SpPayAmnt,     CashRcv,              RcvAmnt,                 ChqPays,      PayAmnt,               LastUpdate
+        ''    cmd1 = New SqlCommand("Insert DaySummery values('" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & rdr("CusName") & "','" & rdr("RcvAmt") & "','" & "-" & "','" & 0 & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
+        ''    cmd1.ExecuteNonQuery()
+        ''End While
+        ''rdr.Close()
+
+
+        ''cmd = New SqlCommand("Select * from ChqRcv where(LastUpdate='" & DTP1.Value & "')", con)
+        ''rdr = cmd.ExecuteReader
+        ''While rdr.Read
+        ''    '                                                   Exp,         ExpAmnt,       SupPay,     SpPayAmnt,     CashRcv,  RcvAmnt,       ChqPays,                                       PayAmnt,               LastUpdate
+        ''    cmd1 = New SqlCommand("Insert DaySummery values('" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & "-" & "','" & 0 & "','" & rdr("CusName") & "-" & rdr("CHQNo") & "','" & rdr("Amount") & "','" & Format(Now, "yyyy-MM-dd") & "')", con1)
+        ''    cmd1.ExecuteNonQuery()
+        ''End While
+        ''rdr.Close()
+
+
+        'report3.RecordSelectionFormula = "{DaySumer.SDate} ='" & Format(DTP1.Value, "yyyy-MM-dd") & "'"
+        'xCRINFO(report3)
+        'CrystalReportViewer1.ReportSource = report3
+        'CrystalReportViewer1.Refresh()
     End Sub
 
     Private Sub LinkLabel5_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel5.LinkClicked
@@ -963,21 +1057,21 @@ Public Class FrmRpts
             Dim exp As Double = 0
             Dim suppay As Double = 0
             Dim deposit As Double = 0
-            Dim crPays As Double = 0
+            ' Dim crPays As Double = 0
             Dim slRtn As Double = 0
             Dim crdSls As Double = 0
             Dim opBal As Double = 0
             cmd = New SqlCommand("Select ISNULL(SUM(amn),0) from Op where Dte='" & dd & "'", con)
             opBal = cmd.ExecuteScalar
             Dim dcs As Double = 0
-            cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CASH" & "'and LastUpdate='" & dd & "'", con)
+            cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CASH" & "'and LastUpdate='" & dd & "'and ByCash='" & 0 & "'", con)
             cashSales = cmd.ExecuteScalar
 
-            cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CREDIT" & "'and LastUpdate='" & dd & "'", con)
+            cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where ByCash>'" & 0 & "'and LastUpdate='" & dd & "'", con)
             crdSls = cmd.ExecuteScalar
 
-            cmd = New SqlCommand("Select ISNULL(SUM(ByCard),0)from Inv_Main where InvType='" & "CREDIT" & "'and LastUpdate='" & dd & "'", con)
-            crPays = cmd.ExecuteScalar
+            'cmd = New SqlCommand("Select ISNULL(SUM(ByCash),0)from Inv_Main where LastUpdate='" & dd & "'", con)
+            'crPays = cmd.ExecuteScalar
 
             cmd = New SqlCommand("Select ISNULL(SUM(RcvAmt),0)from Receipt_Main where RcvDT='" & dd & "'", con)
             cashReceipts = cmd.ExecuteScalar

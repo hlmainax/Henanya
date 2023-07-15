@@ -2784,7 +2784,7 @@ Public Class FrmCash1
                     cmd1 = New SqlCommand("Update Op set amn='" & PaydAmt.Text & "'where Dte='" & Now.Date & "'", con1)
                     cmd1.ExecuteNonQuery()
                 Else
-                    cmd1 = New SqlCommand("Insert Op values('" & Now.Date & "','" & PaydAmt.Text & "')", con1)
+                    cmd1 = New SqlCommand("Insert Op values('" & PaydAmt.Text & "','" & Now.Date & "')", con1)
                     cmd1.ExecuteNonQuery()
                 End If
                 rdr.Close()
@@ -5582,10 +5582,10 @@ Public Class FrmCash1
         dayBal = opBal
 
         Dim dcs As Double = 0
-        cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CASH" & "'and LastUpdate='" & dd & "'", con)
+        cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where ByCash='" & 0 & "'and LastUpdate='" & dd & "'", con)
         cashSales = cmd.ExecuteScalar
 
-        cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where InvType='" & "CREDIT" & "'and LastUpdate='" & dd & "'", con)
+        cmd = New SqlCommand("Select ISNULL(SUM(InvAmnt),0)from Inv_Main where ByCash<>'" & 0 & "'and LastUpdate='" & dd & "'", con)
         crdSls = cmd.ExecuteScalar
 
         cmd = New SqlCommand("Select ISNULL(SUM(ByCard),0)from Inv_Main where InvType='" & "CREDIT" & "'and LastUpdate='" & dd & "'", con)

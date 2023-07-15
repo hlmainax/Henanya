@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
-    <PublishUrlHistory>C:\Users\acer\Desktop\HNY3.5\|C:\Users\acer\Desktop\HNY3.4\|C:\Users\acer\Desktop\HNY3.3\|\\server-pc\D\HNS3.1\|\\server-pc\D\HNS3.0\</PublishUrlHistory>
+    <PublishUrlHistory>C:\Users\acer\Desktop\HNY3.7\|C:\Users\acer\Desktop\HNY3.6\|C:\Users\acer\Desktop\HNY3.5\|C:\Users\acer\Desktop\HNY3.4\|C:\Users\acer\Desktop\HNY3.3\</PublishUrlHistory>
     <InstallUrlHistory />
     <SupportUrlHistory />
     <UpdateUrlHistory>\\192.168.1.101\Users\KRISTAL LANKA\Desktop\Update\</UpdateUrlHistory>

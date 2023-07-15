@@ -75,3 +75,13 @@ C:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.vbproj.CoreCompil
 C:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.dll
 C:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.xml
 C:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.pdb
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\bin\Debug\ConnData.dll
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\bin\Debug\ConnData.pdb
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\bin\Debug\ConnData.xml
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.vbproj.AssemblyReference.cache
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.Resources.resources
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.vbproj.GenerateResource.cache
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.vbproj.CoreCompileInputs.cache
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.dll
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.xml
+D:\Git-Soft\Henanya-Super\ConnData\ConnData\obj\Debug\ConnData.pdb
